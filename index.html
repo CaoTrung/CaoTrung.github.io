@@ -1,1 +1,655 @@
-HELLO WORLD
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Vue.js tutorial</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a id="logo" href="">
+                <img src="logo.png" alt="">
+                <span>Vue.js</span>
+            </a>
+            <h1>Vue.js Tutorial</h1>
+            <hr>
+        </header>
+        <!-- /header -->
+
+        <nav class="nav">
+            <ul>
+                <li><a href="#gioi-thieu-ve-vue.js" >Giới thiệu về Vue.js</a></li>
+                <li><a href="#cau-truc-cua-vue.js" >Cấu trúc của Vue.js</a>
+                    <ul class="menu-sub">
+                        <li><a href="#rendering"> Rendering</a></li>
+                        <li><a href="#directive"> Directive</a></li>
+                        <li><a href="#mustache-binding"> Mustache binding</a></li>
+                        <li><a href="#computed-properties"> Computed Properties</a></li>
+                        <li><a href="#class-and-style-bindings"> Class and Style Bindings</a></li>
+                        <li><a href="#list-rendering"> List Rendering</a></li>
+                        <li><a href="#form-input-binding"> Form Input Binding</a></li>
+                        <li><a href="#components"> Components</a></li>
+                    </ul>
+                </li>
+                <li><a href="#so-sanh-voi-framwork-khac">So sánh Vue.js với các framework khác</a></li>
+            </ul>
+        </nav>
+        
+        <article class="article">
+            <h2 id="gioi-thieu-ve-Vue.js">Giới thiệu về Vue.js</h2>
+                <p>Vue là một framwork tiên tiến được sử dụng để xây dựng giao diện người dùng. Không như những framwork hỗ trợ đầy đủ mọi thứ cần có để xây dựng app, Vue được thiết kế từ những cái nền tảng để được gia tăng dần. Phần thư viện lõi của Vue chỉ tập trung vào lớp View mà thôi và nó rất dễ để làm quen và tích hợp với những thư viện hoặc những dự án đã tồn tại khác. Mặt khác, Vue cũng sở hữu một sức mạnh lớn trong việc xây dựng  Single-Page-Applications khi kết hợp với các công cụ hiện đại và thư viện hỗ trợ. Phần tìm hiểu này của nhóm được thực hiện trên Vue có version 2.0 trở lên. Với những version trước có thể tìm hiểu trên trang chủ vuejs.org</p>
+                <p>Vue không hỗ trợ trình duyệt IE có phiên bản thấp hơn 9, vì nó sử dụng những tính năng của ECMAScript5 mà những phiên bản trước đó không có. Tuy nhiên Vue sẽ hỗ trợ tất cả các trình duyệt tương thích với ECMAScript 5</p>
+                <p>Để sử dụng được Vue thì có thể tải trực tiếp phiên bản Development hoặc Production trên trang chủ của Vue sau đó chèn trong thẻ script. Một cách khác đơn giản hơn là chèn Vue vào thẻ html bằng đoạn code: <xmp> 
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+                </xmp> với điều kiện có kết nối Internet. Ngoài ra, thay vì sử dụng unpkg thì có thể sử dụng jsDelivr hoặc cdnjs. Nhưng 2 dịch vụ này phải mất ít thời gian để đồng bộ nên có khả năng chưa thể cập nhật kịp phiên bản mới.</p>
+
+            <h2 id="cau-truc-cua-Vue.js">Cấu trúc của Vue.js</h2>
+                <h3 id="rendering">Rendering</h3>
+                    <p>Chúng ta hãy bắt đầu với ứng dụng đơn giản nhất: xuất câu chào “Hello World”:
+                        <xmp>
+    html:
+        <div id="app-1">
+            {{ message }}
+        </div>
+                        </xmp>
+                        <xmp>
+    js:
+        var app1 = new Vue({
+            el: '#app-1',
+            data: {
+            message: 'Hello World!'
+            }
+        })
+                        </xmp>
+                    Chỉ đơn giản vậy thôi là chúng ta đã có 1 ứng dụng Vue có nhiệm vụ xuất câu chào “Hello World!”. Trong đoạn code js trên chúng ta khởi tạo 1 Vue app1 bằng cách tạo 1 root Vue instance thông qua toán tử new. Khi khởi tạo 1 Vue bạn cần phải truyền vào một options object có chứa các thuộc tính như element, data, template, phương thức hay các hàm callback… Thuộc tính el dùng để xác định app1 sẽ được thực hiện trên thẻ html có id= “app-1”. Thuộc tính data chứa dữ liệu sẽ được render.  Lõi c ủa Vue cho phép chúng ta render dữ liệu đến DOM bằng cú pháp template rõ ràng, đơn giản. Nhìn vào ứng dụng trên thì có vẻ Vue chỉ đơn giản là render 1 string thôi nhưng thực ra nó đã làm nhiều hơn thế. Dữ liệu và DOM  đã được liên kết với nhau nên từ lúc này mọi thứ đã reactive. Muốn kiểm chứng điều đó bạn chỉ cần mở Javascript console lên và thay đổi giá trị của app1.message, lúc này nội dung được render sẽ thay đổi theo giá trị bạn thay đổi. 
+                    </p>
+                <h3 id="directive">Directive</h3>
+                    <p>
+                        Ngoài việc chèn text bằng cách như trên, chúng ta có thể bind nó như sau:
+                        <xmp>
+    Html:
+
+        <div id="app-2">
+            <span v-bind:title="message">
+                Trỏ chuột vào đây để xem thời gian hiện tại
+            </span>
+        </div>
+                        </xmp>
+                        <xmp>
+    js:
+
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+                message: new Date()
+            }
+        })
+                        </xmp>
+                        Chắc hẳn nhìn vào bạn sẽ thắc mắc ngay với thuộc tính <b>v-bind</b>. Thuộc tính này được gọi là directive (có thể dịch là chỉ thị). Directive của Vue được nhận biết bằng tiền tố v- và các directive có nhiệm vụ cung cấp reactive behavior cho DOM, hay nói cách khác là dấu hiệu giúp Vue nhận biết các DOM element cần thực hiện một công việc nào đó chẳng hạn ẩn hoặc hiện element… Cụ thể trong trường hợp sử dụng này là muốn nói rằng “Phải giữ cho thuộc tính title của element này luôn được cập nhật với giá trị của message”.  Tương tự ở trên, bạn có thể mở console lên và thay đổi giá trị của app2.message, sau đó quan sát thay đổi.
+                    </p> 
+                    <p>
+                        Ngoài <b>v-bind</b> còn có rất nhiều các directive khác. Chúng ta sẽ điểm qua vài directive hay dùng nhất :
+                    </p>
+                    <p>
+                        <b>v-if</b>, <b>v-else</b>, <b>v-else-if</b>: các directive này phục cho việc rẽ nhánh tương tự như trong các ngôn ngữ khác. Đoạn code minh họa dưới đây dùng 3 directive này để kiểm tra giá trị của data sau đó xuất ra text tương ứng:
+                        <xmp>
+    Html:
+
+        <div id="app3">
+            <span v-if="data === 'A'">show A</span>
+            <span v-else-if="data === 'B'">show B</span>
+            <span v-else>not A/B</span>
+        </div>
+                        </xmp>
+                        <xmp>
+    js:
+
+        var app3 = new Vue({
+            el: '#app3',
+            data: {
+                data: "C"
+            }
+        });
+                        </xmp>
+                        Kết quả: not A/B (vì giá trị của data không phải A cũng không phải B nên sẽ rơi vào v-else)
+                    </p>
+                    <p>
+                        <b>v-for</b>: dùng cho vòng lặp. Ví dụ ta có thể dùng <b>v-for</b> để hiển thị danh sách các phần tử trong 1 mảng:
+                        <xmp>
+    Html:
+
+        <div id="app-4">
+            <ul>
+            <li v-for="lang in langs">
+                {{lang.text}}
+            </li>
+            </ul>
+        </div>
+                        </xmp>
+                        <xmp>
+    Js:
+        var app4 = new Vue({
+            el: '#app-4',
+            data:{
+                langs: [
+                    {text: 'Html'},
+                    {text: 'Css'},
+                    {text: 'Javascript'},
+                    {text: 'Vuejs'}
+                ]
+            }
+        })
+                        </xmp>
+    Kết quả: 
+        <ul>
+            <li>Html</li>
+            <li>Css</li>
+            <li>Javascript</li>
+            <li>Vue</li>
+        </ul>
+        Bạn có thể dùng console để add phần tử vảo mảng bằng lệnh <b>app4.langs.push({text: ‘nhập text theo ý bạn'})</b>.
+                    </p>
+                    <p>
+                        <b>v-on</b>: directive <b>v-on</b> được sử dụng để đính các event listener vào DOM, các listener này sẽ gọi các method tương ứng trong đối tượng Vue. Ví dụ sử dụng <b>v-on:click</b> để bắt sự kiện click vào button và xuất ra hộp thoại tương ứng:
+                        <xmp>
+    Html:
+        <div id="app-5">
+            <button v-on:click="say('hello')">say hello</button>
+            <button v-on:click="say('goodbye')">say goodbye</button>
+        </div>
+                        </xmp>
+                        <xmp>
+    js:
+        var app5 = new Vue({
+            el: '#app-5',
+            methods: {
+                say: function(message){
+                    alert(message)
+                }
+            }
+        });
+                        </xmp>
+                        Kết quả: khi click vào button say hello sẽ hiện ra hộp thoại với dòng text hello tương tự với button say goodbye sẽ hiện ra hộp thoại với dòng text goodbye <br><br>
+                        Có thể thấy trong thuộc tính methods ta định nghĩa 1 hàm say với tham số nhận vào là text message sau đó sẽ xuất ra hộp thoại với nội dung là message truyền vào. Khi button được click thì sẽ gọi hàm say với tham số tương ứng.
+                    </p>
+                    <p>
+                        Ghi chú: với những directive thường dùng như <b>v-bind</b> và <b>v-on</b>, Vue cung cấp cú pháp rút gọn đặt biệt cho chúng. Cụ thể ‘:’ dành cho <b>v-bind</b> và ‘@’ dành cho <b>v-on</b>. Ví dụ <b>v-bind:title</b> sẽ được rút gọn thành :title và <b>v-on:click</b> sẽ được rút gọn thành @click. 
+                        <br><br>
+                        Các bạn có thể xem thêm nhiều directive khác trên trang chủ của vue.js
+
+                    </p>    
+                <h3 id="mustache-binding">Mustache binding</h3>
+                    <p>
+                        Dạng cơ bản nhất để bind dữ liệu là sử dụng cú pháp <b>“Mustache”</b> (cặp 2 dấu ngoặc nhọn). Cái mà xuất hiện ngay trong ví dụ đầu tiên đê xuất câu chào Hello World!:
+                        <xmp>
+    Html:
+        <div id="app-1">
+          {{ message }}
+        </div>
+        </xmp>
+        <xmp>
+        js:
+        var app1 = new Vue({
+          el: '#app-1',
+          data: {
+            message: 'Hello World!'
+          }
+        })
+                        </xmp>
+                        Mustache sẽ bị thay thế bởi giá trị của message trong data của đối tượng Vue app1, cụ thể là nó sẽ được thay bằng dòng text “Hello World!”. Nó cũng sẽ được update mỗi khi giá trị của message thay đổi. Tuy nhiên nếu ta không muốn nó update khi message thay đổi thì có thể thêm directive <b>v-once</b> vào thẻ div, nhưng phải lưu ý rằng điều này cũng sẽ tác động tới tất cả các binding khác trong cùng node.
+                    </p>
+                    <p>
+                        Mustache sẽ thông dịch dữ liệu thành dạng plain text (nghĩa là tất cả mọi thứ sẽ được hiển thị thành text có thể đọc được, kể cả code html). Để có thể xuất ra code html, bạn cần sử dụng directive <b>v-html</b>, ví dụ: <xmp>  
+    <div v-html="rawHtml"></div>
+                        </xmp>
+                        Mustache không thể được sử dụng bên trong các thuộc tính HTML, thay vào đó sẽ sử dụng directive như <b>v-bind</b>.
+                    </p>
+                   
+                <h3 id="computed-properties">Computed Properties</h3>
+                    <p>
+                        Vue cung cấp thuộc tính computed để chứa các phương thức tính toán trước các giá trị, sau đó sử dụng các giá trị này lên view. Bạn có thể hiểu rằng computed property được thực hiện ở hình thức là 1 hàm hoặc 1 object chứa 2 thuộc tính là hàm get và set. Bạn có thể dùng tên của computed property mà bạn đã định nghĩa như một thuộc tính của đối tượng Vue bạn khởi tạo. Khi được gọi thì các hàm thực thi cho computed property đó sẽ được gọi lên để xử lý.
+                    </p>
+                    <p>
+                        Vậy tại sao phải dùng computed property? Để tiện lợi thì ta thường đưa các biểu thức của những phép tính đơn giản vào các template nhưng với những phép tính và biểu thức logic phức tạp hơn thì sẽ gây ra sự cồng kềnh và khó bảo trì, ví dụ:
+                        <xmp>
+    Html:
+
+        <div id="app-6">
+          {{ message.split('').reverse().join('') }}
+        </div>
+                        </xmp>
+                        Khi nhìn vào template này ta mất nhiều thời gian hơn để hiểu mục đích của đoạn code là muốn hiển thị giá trị của message theo thứ tự ngược lại. Và giả sử như bạn muốn hiển thị chuỗi đảo ngược này 1 vài lần nữa thì sẽ rất mất thời gian. Đây cũng chính là lúc mà computed property hữu dụng
+                        <xmp>
+    Html:
+
+        <div id="app-6">
+          <p>Original message: "{{ message }}"</p>
+          <p>Reversed message: "{{ reversedMessage }}"</p>
+        </div>
+                        </xmp>
+                        <xmp>
+    js:
+        var app6 = new Vue({
+            el: '#app-6’,
+            data: {
+                message: 'Hello'
+            },
+            computed: {
+                reversedMessage: function () {
+                    return this.message.split('').reverse().join('')
+                }
+            }
+        })  
+                        </xmp>
+                        Kết quả:
+                        <xmp>
+    Original message: “Hello”
+    Reversed message: “olleH” 
+
+                        </xmp>
+                        Trong đoạn code js chúng ta đã khai báo computed property là reversedMessage. Hàm này sẽ được sử dụng như hàm getter cho thuộc tính app6.reversedMessage.
+                    </p>
+                    <p>
+                        Template đã đơn giản, gọn gàng hơn nhiều và bạn có thể bind các computed property trong template giống hệt như các thuộc tính bình thường khác. Vue sẽ tự động cập nhật giá trị được hiện thị ở nơi bind app6.reversedMessage khi app6.message thay đổi. Đặc biệt nhất là các hàm computed không tạo ra các hiệu ứng lề (side effects) khi chúng tạo ra mối quan hệ phụ thuộc này, điều này giúp việc test dễ hơn
+                    </p>
+                    <h4>So sánh Computed với Methods</h4>
+                    <p>
+                        Chắn hẳn bạn cũng nhận ra rằng chúng ta có thể đạt được kết quả tương tự khi sử dụng methods thay vì computed:
+                        <xmp>
+    Html:
+    <p>Reversed message: "{{ reverseMessage() }}"</p>
+                        </xmp>
+                        <xmp>
+    js:
+        methods: {
+            reversedMessage: function () {
+               return this.message.split('').reverse().join('')
+            }
+          }
+        })
+                        </xmp>
+                        Nhìn vào sự giống nhau của kết quả, chúng ta biết rằng có 2 cách để tiếp cận cho cùng 1 bài toán. Nhưng sự khác biệt ở đây chính là các thuộc tính computed được cache lại sau khi tính toán lần đâu, nghĩa là nếu message ở trên không thay đổi thì reversedMessage sẽ ngay lập tức trả về giá trị tính toán trước đó mà không cần phải chạy lại hàm để tính lại. Còn với methods thì nó luôn luôn chạy lại hàm để tính toán các giá trị trước khi trả về.
+                    </p>
+                    <p>
+                        Vậy khi nào thì cần cache? Hãy nghĩ đến trường hợp chúng ta cần tính toán với một mảng dữ liệu lớn và thực hiện rất nhiều tính toán trong đó, nếu không sử dụng cache sẽ mất rất nhiều thời gian để thực hiện cũng như việc chiếm dụng tài nguyên hệ thống
+                    </p>
+                <h3 id="class-and-style-bindings">Class and Style Bindings</h3>
+                    <p>
+                        Điều khiển class và inline style của element là một nhu cầu rất thông dụng về data binding. Ngoài bind chuỗi thì Vue còn cung cấp các cải tiến đặc biệt khi sử dụng <b>v-bind</b> để bind class và style
+                    </p>
+                    <h4>Binding HTML Classes</h4>
+                    <p>
+                        Chúng ta có thể truyền một Object hoặc Array vào v-bind:class để bật tắt các class một cách tự động, ví dụ truyền một Object: 
+                        <xmp>
+    <div v-bind:class="{ active: isActive }"></div>
+                        </xmp>
+                        Nghĩa là class active sẽ được quyết định bởi giá trị true/false của thuộc tính isActive
+                    </p>
+                    <p>
+                        Không chỉ 1 class, ta có thể tắt mở nhiều class bằng cách truyền vào object nhiều trường. Template dưới đây là 1 ví dụ (sử dụng dấu nháy nếu bạn dùng <b>kebab-case</b> để đặt tên):
+                        <xmp>
+    <div class="static"
+        v-bind:class="{ active: isActive, 'text-danger': hasError }">
+                        </div>
+                        </xmp>
+                        Và giả sử thuộc tính data như sau:
+                        <xmp>
+    data: {
+        isActive: true,
+        hasError: false
+    }
+                        </xmp>          
+                        Kết quả:
+                            <xmp>
+    <div class="static active"></div>
+                            </xmp>
+                        Danh sách class sẽ thay đổi khi isActive hoặc hasError thay đổi. Ví dụ nếu hasError thay đổi thành true, danh sách class sẽ đổi thành “static active text-danger”
+                    </p>
+                    <p>
+                        Với array, chúng tay có thể truyền một array vào <b>v-bind:class</b> như sau:
+                        <xmp>
+    <div v-bind:class="[activeClass, errorClass]">
+                        </xmp>
+                        <xmp>
+    data: {
+        activeClass: 'active',
+        errorClass: 'text-danger'
+    }
+                        </xmp>
+                        Khi render kết quả sẽ cho ra:
+                            <xmp>
+    <div class="active text-danger"></div>
+                            </xmp>
+                        Có thể sử dụng cú pháp rút gọn để bật tắt class theo điều kiện:
+                            <xmp>
+    <div v-bind:class="[isActive ? activeClass : '', errorClass]">
+                            </xmp>
+                        Cú pháp trên muốn nói nếu isActive = true thì class activeClass sẽ được bật, còn errorClass thì luôn được bật
+                    </p>
+                    <p>
+                        Ngoài ra có thể truyền object ngay bên trong cú pháp array để code trở nên gọn gàng hơn:
+                        <xmp>
+    <div v-bind:class="[{ active: isActive }, errorClass]">
+                        </xmp>
+                    </p>        
+                    <h4>Binding Inline Styles</h4>
+                    <p>
+                        Bạn cũng có thể bind theo kiểu object hoặc array cho <b>v-bind:style</b> rất đơn giản và rõ ràng. Ví dụ với object:
+                        <xmp>
+    <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+                        </xmp>
+                        <xmp>
+    data: {
+        activeColor: 'red',
+        fontSize: 30
+    }
+                        </xmp>
+                        Style ở trên chỉ có 2 thuộc tính mà nhìn đã có vẻ dài dòng rồi, vì vậy ta có thể biến đổi 1 xíu để code trở nên gọn gàng hơn bằng cách như sau:
+                        <xmp>
+    <div v-bind:style="styleObject"></div>
+                        </xmp>
+                        <xmp>
+    data: {
+        styleObject: {
+        color: 'red',
+        fontSize: '13px'
+        }
+    } 
+                        </xmp>  
+                        Nhìn rất giống CSS ngoại trừ việc nó là 1 object trong js
+                    </p>
+                    <p>
+                        Bind theo kiểu array cho phép bạn sử dụng nhiều object trong nó, ví dụ:
+                        <xmp>
+    <div v-bind:style="[styleObject, overridingStyles]">
+                        </xmp>
+                    </p>
+
+                <h3 id="list-rendering">List Rendering</h3>
+                    <p>
+                        Ta hãy nhìn lại ví dụ render 1 danh sách trong phần directive khi sử dụng v-for
+                        <xmp>
+    Html:
+        <div id="app-4">
+            <ul>
+                <li v-for="lang in langs">
+                    {{lang.text}}
+                </li>
+            </ul>
+        </div>
+                        </xmp>
+                        <xmp>
+    js:
+        var app4 = new Vue({
+            el: '#app-4',
+            data:{
+                langs: [
+                    {text: 'Html'},
+                    {text: 'Css'},
+                    {text: 'Javascript'},
+                    {text: 'Vuejs'}
+                ]},
+        })
+                        </xmp>
+                        Có thể thấy <b>v-for</b> yêu cầu 1 cú pháp đặc biệt thuộc dạng “lang in langs”, trong đó langs là mảng dữ liệu nguồn (bao gồm các ngôn ngữ ‘html’, ‘css’,…) còn lang là 1 alias cho phần tử của mảng đang được lặp. Bạn cũng có thể sử dụng of thay cho in để gần gũi hơn với cú pháp của javascript trong vòng lặp.
+                    </p>
+                    <p>
+                        Không chỉ lặp trên mảng, <b>v-for</b> cũng có thể lặp qua các thành phần của object ví dụ:
+                        <xmp>
+    <ul id="loop-object">
+      <li v-for="value in object">
+        {{ value }}
+      </li>
+    </ul>
+                        </xmp>
+                        <xmp>
+    new Vue({
+      el: '#loop-object',
+      data: {
+        object: {
+          Name: 'Daniel',
+          gender: 'male',
+          age: 22
+        }
+      }
+    })
+                        </xmp>
+                        Kết quả:
+
+                    </p>
+                    <p>
+                        Ngoài ra <b>v-for</b> còn cho phép chúng ta truyền vào nhiều hơn một đối số. Ví dụ như truyền đối số thứ 2 là key:
+                        <xmp>
+    <div v-for="(value, key) in object">
+      {{ key }} : {{ value }}
+    </div>
+                        </xmp>
+                        Kết quả:
+                        <br><br>
+                        Hoặc thêm index vào:
+                        <xmp>
+    <div v-for="(value, key, index) in object">
+      {{ index }}. {{ key }} : {{ value }}
+    </div>
+                        </xmp>
+                        Kết quả: 
+                    </p>
+                    <h4>Thể hiện kết quả đã được lọc/sắp xếp</h4>
+                    <p>
+                        Đôi khi chúng ta muốn thể hiện 1 mảng đã được lọc hoặc được sắp xếp mà không làm thay đổi hoặc reset dữ liệu ban đầu. Trong trường hợp này bạn có thể tạo 1 computed property để trả về mảng đã được lọc hoặc sắp xếp. Nhưng trong Vue cũng có khái niệm Filter nên để tránh nhầm lẫn với việc tạo computed property thực hiện cho việc lọc với sử dụng cú pháp Filter có sẵn, ta sẽ xem qua một chút về Filter trong Vue trước. Ví dụ:
+                        <xmp>
+    Html:
+        {{ message | capitalize }}
+                        </xmp>
+
+                        <xmp>
+    js:
+        new Vue({
+            el: ...,
+            data: {
+                message: ‘hello’
+            },
+            filters: {
+                capitalize: function (value) {
+                    if (!value) return ''
+                    value = value.toString()
+                    return value.charAt(0).toUpperCase() + value.slice(1)
+                }
+            }
+        })
+                        </xmp>
+                        Bạn có thể định nghĩa các filter trong Vue để phục vụ cho việc định dạng text thông thường. Các filter được định nghĩa bên trong thuộc tính filters của đối tượng Vue và chúng nên được thêm vào phía sau biểu thức Javascript, kí hiệu bằng biểu tượng ‘|’(dấu gạch đứng). 
+                    </p>
+                    <p>
+                        Đoạn code trên nhằm mục đích Biến đổi text ban đầu thành text được viết hoa chữ cái đầu. Cụ thể “hello” sẽ được biến đổi thành “Hello”.  Hàm capitalize sẽ luôn nhận giá trị của message làm tham số đầu tiên, điều đó có nghĩa các hàm filter có thể nhận vào nhiều tham số hơn là chỉ 1 vì thật chất filter cũng chỉ là các hàm Javascript
+                        <br><br>
+                        Ngoài ra ta có thể kết hợp nhiều filter lại với nhau:
+                            <xmp>
+    {{ message | filterA | filterB }}
+                            </xmp>
+
+                        Trong Vue 2.x, filter chỉ có thể được sử dụng bên trong các mustache interpolation như ví dụ ở trên hoặc trong các biểu thức <b>v-bind</b> vì mục đích của nó là biến đổi text. Với các biến dữ liệu phức tạp hơn, bạn nên sử dụng computed property.
+                        <br><br>
+                        Ví dụ bạn muốn lọc để lấy những số chẵn trong mảng:
+                        <xmp>
+    <li v-for="n in evenNumbers">{{ n }}</li>
+                        </xmp>
+                        <xmp>
+    data: {
+      numbers: [ 1, 2, 3, 4, 5 ]
+    },
+    computed: {
+      evenNumbers: function () {
+        return this.numbers.filter(function (number) {
+          return number % 2 === 0
+        })
+      }
+    }
+                        </xmp>
+                        Nhìn vào chắc hẳn các bạn cũng đoán được kết quả sẽ là 2 và 4
+                        <br><br>
+                        Computed và method đều cho ra kết quả như nhau nên bạn cũng có thể sử dụng method để lọc hoặc sắp xếp mảng theo ý muốn.
+                    </p>
+                <h3 id="form-input-binding">Form Input Binding</h3>
+                    <p>
+                        Bạn có thể sử dụng directive <b>v-model</b> để bind dữ liệu 2 chiều trên các form input, textarea với state của app một cách dễ dàng. Ví dụ:
+                    </p>
+                    <h4>Text:</h4>
+                    <p>
+                        <xmp>
+    <div id="app-6">
+        <p>{{ message }}</p>
+        <input v-model="message">
+    </div>
+                        </xmp>
+                        <xmp>
+    var app6 = new Vue({
+        el: '#app-6',
+        data: {
+            message: 'Hello Vue!'
+        } 
+    })
+                        </xmp>
+                        Lúc này nội dung trong input cũng chính là giá trị của message. Do vậy nội dung trong thẻ input thay đổi thì giá trị của message cũng thay đổi theo và ngược lại (two-way data binding). Với multitext (textarea) cũng làm tương tự.
+                    </p>
+                    <h4>Checkbox</h4>
+                    <p>
+                        <xmp>
+    <input type="checkbox" id="checkbox" v-model="checked">
+    <label for="checkbox">{{ checked }}</label>
+                        </xmp>
+                        <xmp>
+    el: '#checkbox',
+    data: {
+        message: 'Hello Vue!'
+    }
+                        </xmp>
+                        Kết quả là khi click vào checkbox thì giá trị của label là true (vì checked lúc này = true) còn bỏ tick thì giá trị label = false
+                    </p>
+                    <h4>Radio button</h4>
+                    <p>
+                        <xmp>
+    html:
+        <div id="app">
+            <input type="radio" id="one" value="One" v-model="picked">
+            <label for="one">One</label>
+            <br>
+            <input type="radio" id="two" value="Two" v-model="picked">
+            <label for="two">Two</label>
+            <br>
+            <span>Picked: {{ picked }}</span>
+        </div>
+                        </xmp>
+                        <xmp>
+    js:
+        new Vue({
+            el: '#app',
+            data: {
+                picked: "",
+            }
+        })
+                        </xmp>
+                    </p>
+                    <h4>Select</h4>
+                    <p>
+                        <xmp>
+    html:
+        <select v-model="selected">
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>Selected: {{ selected }}</span>
+                        </xmp>
+                        <xmp>
+    js:
+        data: {
+            selected: "",
+        }
+                        </xmp>
+                    </p>
+                <h3 id="components">Components</h3>
+                    <p>
+                        Component là một khái niệm quan trọng trong Vue, bởi vì nó cho phép chúng ta xây dựng các ứng dụng lớn bằng cách kế hợp các component nhỏ, khép kín và khả năng sử-dụng-lại-cao. Do vậy, hầu hết mọi loại giao diện đều có thể được trừu tượng thành một cây của các components.
+                        <br><br>
+                        Trong Vue, một component cơ bản chính là một đối tượng của Vue với các option được định nghĩa sẵn trong nó. Ta ví dụ tạo 1 component <b>todo-item</b>: (prop giống như 1 thuộc tính tùy chỉnh có tên là todo, sẽ được dùng trong việc bind dữ liệu)
+                        <xmp>
+    js:
+        Vue.component('todo-item', {
+           props: ['todo'],
+           template: '<li>{{ todo.text }}</li>'
+        })
+                        </xmp>
+                        Sau đó tạo 1 đối tượng Vue chứa mảng dữ liệu:
+                        <xmp>
+    js:
+        var app7 = new Vue({
+           el: '#app-7',
+           data: {
+             groceryList: [
+                { text: 'USA' },
+                { text: 'China' },
+                { text: 'Vietnam' }
+             ]
+           }
+        })
+                        </xmp>
+                        Bây giờ, chúng ta có thể truyền nội dung todo vào từng coponent bằng cách sử dụng <b>v-bind</b>:
+                        <xmp>
+    html:
+        <div id="app-7">
+            <ol>
+                <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
+            </ol>
+        </div>
+                        </xmp>
+                        <ol>
+                            <li>USA</li>
+                            <li>China</li>
+                            <li>Vietnam</li>
+                        </ol>
+
+                    </p>
+
+            <h2 id="so-sanh-voi-framwork-khac">So sánh với framwork khác</h2>
+                <p>
+                    Có rất nhiều framwork để so sánh với Vue nhưng tiêu biểu nhất có vẻ là React và Angular
+                    <br>
+                    Tính tới bây giờ, Vue đã trở nên khá nổi và có thể thay thế cho React với Angular trong nhiều trường hợp.
+                    <br>
+                    Vue nhẹ và dễ dàng tìm hiểu, học hỏi. Có thể nói nó được tạo ra từ những kinh nghiệm, thất bại cũng như thành công của React và Angular.
+                    <h4>So sánh với React:</h4>
+                    Giống:
+                    <ul>
+                        <li>Cả 2 đều sử dụng 1 loại DOM ảo</li>
+                        <li>Các view component reactive và compose được</li>
+                        <li>Tập trung vào các thư viện quan trọng vì các thư viện đồng hành đã quản lý routing và global state</li>
+                    </ul>
+                    <p>  
+                    Mặc dù có nhiều điểm giống code của Vue dễ hiểu và đơn giản hơn nhiều so với React, so về hiệu suất render thì Vue hầu như luôn nhanh hơn React và nó cũng là 1 tiền đề để tạo ra công cụ mới và pattern quản lí codebase lớn.
+                    </p>
+                    <h4>So sánh với Angular 1:</h4>
+                    Vue có cú pháp trông rất giống với Angular (như <b>v-if</b> với <b>ng-if</b>…) bởi vì có nhiều thứ mà Angular đã đạt được kết quả tốt và những thứ này đã được truyền lại cho Vue khi nó vừa được phát triển. Nhưng Vue cũng cố gắng cải thiện hoặc tránh nhiều lỗi xảy đến với Angular
+                    <br>
+                    Vue đơn giản hơn nhiều so với Angular 1 cả về API và design. Hơn nữa, về hiệu suất Vue cũng nhanh hơn nhiều so với Angular 1
+                    <br>
+                    Angular 1 nhấn mạnh về việc ứng dụng của bạn có cấu trúc như thế nào, còn Vue thì đưa ra những giải pháp có tính mềm dẻo, mô đun hơn. Do vậy Vue có thể thích nghi hơn với nhiều dự án
+                    <br>
+                    Vue phân biệt rõ ràng hơn giữa Directive và Component trong khi với Angular, ta dễ bị nhầm lẫn giữa 2 khái niệm đó
+                    <br><br>
+                    <b>Kết luận</b><br>
+                    Hiện nay, <b>Vue.js</b> vẫn chưa phổ biến như <b>React</b> hay <b>Angular</b> Nhưng nhìn chung, Vue.js dễ hiểu và đơn giản hơn và nó mang đến câu trả lời cho các vấn đề của Reactjs & Angularjs
+        </article>
+        
+        <footer>
+            Copyright &copy; T-T
+        </footer>
+    </div>
+
+</body>
+</html>
